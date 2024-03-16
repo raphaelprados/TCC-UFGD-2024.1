@@ -1,6 +1,6 @@
 #INSTALL-ALL.sh
 
-sudo apt-get install build-essential gfortran pthon gdb -y
+sudo apt-get install build-essential gfortran python gdb -y
 wget https://www.mpich.org/static/downloads/3.3a2/mpich-3.3a2.tar.gz
 tar xf mpich-3.3a2.tar.gz
 rm mpich-3.3a2.tar.gz 
