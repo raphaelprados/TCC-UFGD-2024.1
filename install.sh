@@ -1,18 +1,15 @@
 #INSTALL-ALL.sh
 
-sudo apt-get install build-essential gfortran gdb -y
-
-sudo apt-get install libtool autoconf libibverbs-dev bison byacc -y
+sudo apt-get install build-essential gfortran pthon gdb -y
 wget https://www.mpich.org/static/downloads/3.3a2/mpich-3.3a2.tar.gz
-wget https://www.mpich.org/static/downloads/3.3a2/hydra-3.3a2.tar.gz
-tar xf mvapich2-2.3.1.tar.gz
-rm mvapich2-2.3.1.tar.gz
-cd mvapich2-2.3.1
-sudo ./configure --disable-mcast
-autoreconf -f -i
-sudo make FFLAGS=-Wno-argument-mismatch
-sudo make install
+tar xf mpich-3.3a2.tar.gz
+rm mpich-3.3a2.tar.gz 
+cd mpich-3.3a2
+sudo ./configure --with-slurm
+sudo make
+sudo make install 
 cd ..
+PATH=/home/manager/mpich-3.3a2/:$PATH ; export PATH
 
 wget https://github.com/raphaelprados/TCC-2023-2/raw/main/dmtcp-2.5.2.tar.gz
 tar xf dmtcp-2.5.2.tar.gz
