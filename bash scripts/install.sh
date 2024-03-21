@@ -5,7 +5,7 @@ wget https://www.mpich.org/static/downloads/3.3a2/mpich-3.3a2.tar.gz
 tar xf mpich-3.3a2.tar.gz
 rm mpich-3.3a2.tar.gz 
 cd mpich-3.3a2
-sudo ./configure --with-slurm
+sudo ./configure --with-slurm --with-pmi
 sudo make
 sudo make install 
 cd ..
@@ -38,4 +38,12 @@ make lu CLASS=C
 make ft CLASS=E
 cd ../..
 
-
+sudo apt-get install openssl libssl-dev libpam0g-dev rpmbuild numactl libnuma-dev libnuma1 hwloc libhwloc-dev lua5.3 liblua5.3-dev libreadline-dev librrd-dev libncurses5-dev man2html libibmad5 libibumad-dev -y
+wget http://134.100.28.207/files/src/slurm/$slurm_link.tar.bz2
+tar xfj $slurm_link.tar.gz2
+rm $slurm_link.tar.gz2
+cd $slurm_link
+./configure --prefix=/usr/local/slurm-19.05.3-2
+sudo make
+sudo make install
+cd ..

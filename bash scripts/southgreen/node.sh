@@ -1,8 +1,4 @@
 
-cnode1_ip=192.168.1.109
-cnode2_ip=192.168.1.110
-slurm_link=slurm-21.08.3
-
 export MUNGEUSER=1001
 sudo groupadd -g $MUNGEUSER munge
 sudo useradd  -m -c "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u $MUNGEUSER -g munge  -s /sbin/nologin munge
@@ -10,32 +6,31 @@ export SLURMUSER=1002
 sudo groupadd -g $SLURMUSER slurm
 sudo useradd  -m -c "SLURM workload manager" -d /var/lib/slurm -u $SLURMUSER -g slurm  -s /bin/bash slurm
 
+sudo apt-get install libmunge-dev libmunge2 munge -y
+sudo mv munge.key /etc/munge/
+
 sudo chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
 sudo chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
-sudo chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
-sudo chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
+sudo cexec chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
+sudo cexec chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
 
 sudo systemctl enable munge
 sudo systemctl start munge
-
-munge -n | unmunge
-munge -n | ssh manager@$cnode1_ip unmunge
-munge -n | ssh manager@$cnode2_ip unmunge
 
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/install.sh
 chmod +x install.sh
 ./install.sh
 
-sudo apt-get install openssl libssl-dev libpam0g-dev rpmbuild numactl libnuma-dev libnuma1 hwloc libhwloc-dev lua5.3 liblua5.3-dev libreadline-dev librrd-dev libncurses5-dev man2html libibmad5 libibumad-dev -y
+sudo apt-get install mariadb-server -y
+systemctl start mariadb
+systemctl enable mariadb
+mysql_secure_installation
 
-wget http://134.100.28.207/files/src/slurm/$slurm_link.tar.bz2
-tar xfj $slurm_link.tar.gz2
-rm $slurm_link.tar.gz2
-cd $slurm_link
-./configure --prefix=/usr/local/slurm-19.05.3-2
-sudo make
-sudo make install
-cd ..
+sudo echo "[mysqld]\n innodb_buffer_pool_size=1024M\n innodb_log_file_size=64M\n innodb_lock_wait_timeout=900" > /etc/my.cnf.d/innodb.cnf
+
+systemctl stop mariadb
+mv /var/lib/mysql/ib_logfile? /tmp/
+systemctl start mariadb
 
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm.conf
 

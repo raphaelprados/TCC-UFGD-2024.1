@@ -1,7 +1,8 @@
 
-cnode1_ip=192.168.1.109
-cnode2_ip=192.168.1.110
+cnode_ips=('192.168.1.110','192.168.1.111')
 slurm_link=slurm-21.08.3
+
+${cnode_ips[0]}
 
 export MUNGEUSER=1001
 sudo groupadd -g $MUNGEUSER munge
@@ -13,6 +14,19 @@ sudo useradd  -m -c "SLURM workload manager" -d /var/lib/slurm -u $SLURMUSER -g 
 sudo apt-get install munge libmunge-dev libmunge2 -y
 
 sudo /usr/sbin/create-munge-key
+
+sudo -i
+scp /etc/munge/munge.key /etc/passwd /etc/shadow /etc/group manager@${cnode_ips[0]}:~
+scp /etc/munge/munge.key /etc/passwd /etc/shadow /etc/group manager@${cnode_ips[1]}:~
+# Install munge packages, copies munge.key and slurm/munge users from the headnode to the compute nodes
+# cnode1 actions
+ssh manager@${cnode_ips[0]} 'bash -s' < node.sh &
+#exit
+# cnode2 actions
+ssh manager@${cnode_ips[1]} 'bash -s' < node.sh &
+# run cnode2 script here
+#exit
+exit
 
 sudo -i
 scp /etc/munge/munge.key manager@$cnode1_ip:~
@@ -34,10 +48,6 @@ sudo chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
 
 sudo systemctl enable munge
 sudo systemctl start munge
-
-munge -n | unmunge
-munge -n | ssh manager@$cnode1_ip unmunge
-munge -n | ssh manager@$cnode2_ip unmunge
 
 sudo apt-get install mariadb-server -y
 systemctl start mariadb
@@ -68,13 +78,17 @@ cd ..
 mysql -u root -p
 grant all on slurm_acct_db.* TO 'slurm'@'localhost' identified by 'some_pass' with grant option;
 create database slurm_acct_db;
+exit
 
-sudo echo -e "AuthType=auth/munge\n DbdAddr=192.168.1.250\n DbdHost=master\n SlurmUser=slurm\n DebugLevel=4\n LogFile=/var/log/slurm/slurmdbd.log\n PidFile=/var/run/slurmdbd.pid\n StorageType=accounting_storage/mysql\n StorageHost=master0\n StoragePass=some_pass\n StorageUser=slurm\n StorageLoc=slurm_acct_db"
+
+
 ssudo systemctl start slurmdbd
 sudo systemctl enable slurmdbd
 sudo systemctl status slurmdbd
 
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm.conf
+mv slurm.conf /etc/slurm
+sudo ln -s /etc/slurm/slurm.conf /usr/local/etc/slurm.conf
 
 sudo mkdir /var/spool/slurmctld
 sudo chown slurm:slurm /var/spool/slurmctld
@@ -83,6 +97,8 @@ sudo mkdir  /var/log/slurm
 sudo touch /var/log/slurm/slurmctld.log
 sudo touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log
 sudo chown -R slurm:slurm /var/log/slurm/
+
+wait
 
 systemctl enable slurmctld.service
 systemctl start slurmctld.service
