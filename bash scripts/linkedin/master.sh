@@ -12,7 +12,7 @@ sudo useradd -m -c "MUNGE Uid 'N' " -d /var/lib/munge -u $MUNGEUSER -g munge -s 
 sudo apt-get install munge libmunge-dev libmunge2 rng-tools -y
 sudo rngd -r /dev/urandom
 
-/usr/sbin/create-munge-key -r
+sudo /usr/sbin/create-munge-key -r
 sudo -i
 dd if=/dev/urandom bs=1 count=1024 > /etc/munge/munge.key 
 exit
@@ -35,7 +35,7 @@ exit
 sudo systemctl start munge
 sudo systemctl enable munge
 
-wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/install.sh
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/bash%20scripts/install.sh
 chmod +x install.sh
 ./install.sh
 
@@ -51,7 +51,7 @@ sudo chown slurm:slurm /var/log/slurmctld.log
 sudo touch /var/log/slurm_jobacct.log
 sudo chown slurm:slurm /var/log/slurm_jobacct.log
 
-wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm.conf
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm%20files/slurm.conf
 mv slurm.conf /etc/slurm
 sudo ln -s /etc/slurm/slurm.conf /usr/local/etc/slurm.conf
 
@@ -64,8 +64,12 @@ sudo apt install libcgroup-tools -y
 sudo systemctl start cgconfig
 sudo systemctl enable cgconfig
 
-sudo echo -e "CgroupMountpoint="/cgroup" \n CgroupAutomount=yes \n CgroupReleaseAgentDir="/etc/slurm/cgroup" \n AllowedDevicesFile="/etc/slurm/cgroup_allowed_devices_file.conf" \n ConstrainCores=yes \n TaskAffinity=no \n ConstrainRAMSpace=yes \n ConstrainSwapSpace=yes \n ConstrainDevices=no \n AllowedRamSpace=100 \n AllowedSwapSpace=0 \n MaxRAMPercent=100 \n MaxSwapPercent=100 \n MinRAMSpace=30" > /etc/slurm/cgroups.conf
-sudo echo -e "cgroup_allowed_devices_file.conf\n\n/dev/null\n /dev/urandom\n /dev/zero\n /dev/sda*\n /dev/cpu// \n/dev/pts/*"
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm%20files/cgroups.conf
+sudo mv cgroups.conf /etc/slurm/cgroups.conf
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm%20files/cgroup_allowed_device_file.conf
+sudo mv cgroup_allowed_device_file.conf etc/slurm/cgroup_allowed_device_file.conf
 
 sudo ln -s /etc/slurm/cgroup.conf /usr/local/etc/cgroup.conf
 sudo ln -s /etc/slurm/cgroup_allowed_devices_file.conf /usr/local/etc/cgroup_allowed_devices_file.conf
+
+squeue

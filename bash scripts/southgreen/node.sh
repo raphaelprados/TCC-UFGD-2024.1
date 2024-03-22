@@ -1,38 +1,44 @@
 
-export MUNGEUSER=1001
-sudo groupadd -g $MUNGEUSER munge
-sudo useradd  -m -c "MUNGE Uid 'N' Gid Emporium" -d /var/lib/munge -u $MUNGEUSER -g munge  -s /sbin/nologin munge
-export SLURMUSER=1002
-sudo groupadd -g $SLURMUSER slurm
-sudo useradd  -m -c "SLURM workload manager" -d /var/lib/slurm -u $SLURMUSER -g slurm  -s /bin/bash slurm
+sudo mv passwd shadow group /etc/
 
-sudo apt-get install libmunge-dev libmunge2 munge -y
+sudo apt-get install munge libmunge-dev libmunge2 -y
 sudo mv munge.key /etc/munge/
 
 sudo chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
 sudo chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
-sudo cexec chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
-sudo cexec chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
 
 sudo systemctl enable munge
 sudo systemctl start munge
+
+sudo apt-get install mariadb-server -y
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+mysql_secure_installation
+
+sudo echo "[mysqld]\n innodb_buffer_pool_size=1024M\n innodb_log_file_size=64M\n innodb_lock_wait_timeout=900" > /etc/my.cnf.d/innodb.cnf
+
+sudo systemctl stop mariadb
+sudo mv /var/lib/mysql/ib_logfile? /tmp/
+sudo systemctl start mariadb
 
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/install.sh
 chmod +x install.sh
 ./install.sh
 
-sudo apt-get install mariadb-server -y
-systemctl start mariadb
-systemctl enable mariadb
-mysql_secure_installation
+mysql -u root -p
+grant all on slurm_acct_db.* TO 'slurm'@'localhost' identified by 'some_pass' with grant option;
+create database slurm_acct_db;
+exit
 
-sudo echo "[mysqld]\n innodb_buffer_pool_size=1024M\n innodb_log_file_size=64M\n innodb_lock_wait_timeout=900" > /etc/my.cnf.d/innodb.cnf
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm%20files/slurmdbd.conf
+sudo mv slurmdbd.conf /etc/slurm/
 
-systemctl stop mariadb
-mv /var/lib/mysql/ib_logfile? /tmp/
-systemctl start mariadb
+sudo systemctl start slurmdbd
+sudo systemctl enable slurmdbd
+sudo systemctl status slurmdbd
 
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm.conf
+sudo mv slurm.conf /etc/slurm/
 
 sudo mkdir /var/spool/slurmd
 sudo chown slurm: /var/spool/slurmd

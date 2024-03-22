@@ -9,7 +9,7 @@ sudo chmod 400 /etc/munge/munge.key
 sudo systemctl start munge
 sudo systemctl enable munge
 
-wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/install.sh
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/bash%20scripts/install.sh
 chmod +x install.sh
 ./install.sh
 
@@ -21,8 +21,8 @@ sudo mkdir /var/spool/slurmld
 sudo chown slurm:slurm /var/spool/slurmd
 sudo chmod 755 /var/spool/slurmd
 
-wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm.conf
-mv slurm.conf /etc/slurm
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm%20files/slurm.conf
+sudo mv slurm.conf /etc/slurm
 sudo ln -s /etc/slurm/slurm.conf /usr/local/etc/slurm.conf
 
 sudo systemctl start slurm
