@@ -59,8 +59,8 @@ mv slurm.conf /etc/slurm
 sudo ln -s /etc/slurm/slurm.conf /usr/local/etc/slurm.conf
 
 sudo mkdir /var/spool/slurmctld
-sudo chown slurm:slurm /var/spool/slurmctld
-sudo chmod 755 /var/spool/slurmctld
+sudo chown slurm:slurm /var/spool/slurmctld /var/log /var/run/slurmctld.pid
+sudo chmod 755 /var/spool/slurmctld /var/log /var/run/slurmctld.pid
 sudo mkdir  /var/log/slurm
 sudo touch /var/log/slurm/slurmctld.log
 sudo touch /var/log/slurm/slurm_jobacct.log /var/log/slurm/slurm_jobcomp.log

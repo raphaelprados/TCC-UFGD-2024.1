@@ -41,8 +41,8 @@ wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm.conf
 sudo mv slurm.conf /etc/slurm/
 
 sudo mkdir /var/spool/slurmd
-sudo chown slurm: /var/spool/slurmd
-sudo chmod 755 /var/spool/slurmd
+sudo chown slurm: /var/spool/slurmd /var/run/slurmd.pid /var/log
+sudo chmod 755 /var/spool/slurmd  /var/run/slurmd.pid /var/log
 sudo mkdir /var/log/slurm/
 sudo touch /var/log/slurm/slurmd.log
 sudo chown -R slurm:slurm /var/log/slurm/slurmd.log
