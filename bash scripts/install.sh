@@ -38,12 +38,12 @@ make lu CLASS=C
 make ft CLASS=E
 cd ../..
 
-sudo apt-get install openssl libssl-dev libpam0g-dev numactl libnuma-dev libnuma1 hwloc libhwloc-dev lua5.3 liblua5.3-dev libreadline-dev librrd-dev libncurses5-dev man2html libibmad5 libibumad-dev -y
-wget http://134.100.28.207/files/src/slurm/slurm-21.08.3.tar.bz2
-tar xfj slurm-21.08.3.tar.bz2
-rm slurm-21.08.3.tar.bz2
-cd slurm-21.08.3
-./configure --prefix=/usr/local/slurm-21.08.3
-sudo make
-sudo make install
-cd ..
+#sudo apt-get install openssl libssl-dev libpam0g-dev numactl libnuma-dev libnuma1 hwloc libhwloc-dev lua5.3 liblua5.3-dev libreadline-dev librrd-dev libncurses5-dev man2html libibmad5 libibumad-dev -y
+#wget http://134.100.28.207/files/src/slurm/slurm-21.08.3.tar.bz2
+#tar xfj slurm-21.08.3.tar.bz2
+#rm slurm-21.08.3.tar.bz2
+#cd slurm-21.08.3
+#./configure --prefix=/usr/local/slurm-21.08.3
+#sudo make
+#sudo make install
+#cd ..
