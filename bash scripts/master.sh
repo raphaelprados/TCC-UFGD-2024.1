@@ -1,7 +1,4 @@
 
-node1="192.168.1.130"
-node2="192.168.1.131"
-
 sudo apt update
 sudo apt upgrade
 
@@ -20,6 +17,8 @@ scp /etc/munge/munge.key manager@192.168.1.$node1:~
 scp /etc/munge/munge.key manager@192.168.1.$node2:~
 exit
 
+read -n 1 -p "Aguarde a instalacao do Munge nos nodes.."
+
 sudo apt install slurm-wlm
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm%20files/slurm.conf
 sudo mv slurm.conf /etc/slurm-llnl/
@@ -30,6 +29,8 @@ sudo -i
 scp /etc/slurm-llnl/slurm.conf manager@192.168.1.$node1:~
 scp /etc/slurm-llnl/slurm.conf manager@192.168.1.$node2:~
 exit
+
+read -n 1 -p "Aguarde a instalacao do Slurm nos nodes.."
 
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/bash%20scripts/install.sh
 chmod +x install.sh

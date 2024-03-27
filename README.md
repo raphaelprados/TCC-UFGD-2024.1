@@ -8,7 +8,8 @@
 - [X] Instalação do DMTCP (12/23)
 - [ ] Instalação do SLURM (x/24)
     - [X] Instação do SLURM (25/03)
-    - [ ] Execução de DMTCP+SLURM (x/03) 
+    - [X] Execução de DMTCP+SLURM (26/03)
+        - [ ] Arquivo .out com output da execução esta sendo gerado.  
     - Estamos tentando instalar o slurm a partir de 4 tutoriais diferentes:
     - [Linkedin, Michael VanHorn](https://www.linkedin.com/pulse/step-by-step-slurm-installation-mike-vanhorn/)
     - [South Green Platform](https://southgreenplatform.github.io/trainings/hpc/slurminstallation/)
