@@ -100,8 +100,8 @@ cd $SLURM_SUBMIT_DIR
 # on restart.
 ###############################################################################
 
-# export PATH=<dmtcp-install-path>/bin:$PATH
-# export LD_LIBRARY_PATH=<dmtcp-install-path>/lib:$LD_LIBRARY_PATH
+export PATH=/usr/local/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/lib/dmtcp:$LD_LIBRARY_PATH
 
 #------------------------------------- Launch application ---------------------#
 

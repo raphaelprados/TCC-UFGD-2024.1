@@ -9,7 +9,7 @@ chmod +x install.sh
 ssh-copy-id -i ~/.ssh/id_rsa.pub manager@192.168.1.$node1
 ssh-copy-id -i ~/.ssh/id_rsa.pub manager@192.168.1.$node2
 
-sudo apt install munge libmunge2 libmunge-dev
+sudo apt install munge libmunge2 libmunge-dev -y
 sudo chown -R munge: /etc/munge/ /var/log/munge/ /var/lib/munge/ /run/munge/
 sudo chmod 0700 /etc/munge/ /var/log/munge/ /var/lib/munge/
 sudo chmod 0755 /run/munge/
@@ -24,7 +24,7 @@ scp /etc/munge/munge.key manager@192.168.1.$node2:~
 
 read -n 1 -p "Aguarde a instalacao do Munge nos nodes.."
 
-sudo apt install slurm-wlm
+sudo apt install slurm-wlm -y
 wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/slurm%20files/slurm.conf
 sudo mv slurm.conf /etc/slurm-llnl/
 sudo systemctl enable slurmctld
