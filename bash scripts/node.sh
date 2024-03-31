@@ -3,6 +3,13 @@
 sudo apt update
 sudo apt upgrade
 
+wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/bash%20scripts/install.sh
+chmod +x install.sh
+./install.sh
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub manager@192.168.1.$node
+ssh-copy-id -i ~/.ssh/id_rsa.pub manager@192.168.1.$master
+
 read -n 1 -p "Aguarde a instalacao do Munge no master"
 
 sudo apt install munge libmunge2 libmunge-dev
@@ -25,7 +32,3 @@ sudo systemctl enable slurmd
 sudo systemctl restart slurmd
 
 read -n 1 -p "Instalar MPICH/DMTCP/NPB em todos"
-
-wget https://github.com/raphaelprados/TCC-UFGD-2024.1/raw/main/bash%20scripts/install.sh
-chmod +x install.sh
-./install.sh
