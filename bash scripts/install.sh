@@ -18,7 +18,7 @@ cd dmtcp-2.5.2
 sudo ./configure
 sudo make
 sudo make install
-ssh cnode which dmtcp_launch
+ssh $HOSTNAME which dmtcp_launch
 ssh-keygen -t dsa
 ssh-keygen -t rsa
 cat ~/.ssh/id*.pub >> ~/.ssh/authorized_keys
